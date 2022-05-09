@@ -6,7 +6,7 @@ An advanced League of Legends Orbwalker with Target Selector. I finally pushed i
 ## Features
 
 - Reading API constantly, auto detecting champions and AS
-- Advanced distance-based Target Selector
+- Advanced distance-based Target Selector (Champions only)
 - External Multithreaded Screen Scanning method
 - Configurable orbwalker (additional windup, spinning speed, screen scanning speed)
 - Configurable keybinds
