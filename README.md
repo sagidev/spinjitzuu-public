@@ -1,6 +1,7 @@
 # Spinjitzuu External Orbwalker
 
 An advanced League of Legends Orbwalker with Target Selector. I finally pushed it to public to improve the code and to stop people from buying wadbot for 30$/month for such an easy piece of code.
+This script is **fully external**, so it doesn't inject into your game. It just hooks your mouse and keyboard and read necessary info from the screen.
 
 
 ## Features
