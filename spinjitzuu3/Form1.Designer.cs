@@ -661,7 +661,7 @@ namespace spinjitzuu3
             this.nickLabel.Style = MetroSet_UI.Enums.Style.Dark;
             this.nickLabel.StyleManager = null;
             this.nickLabel.TabIndex = 9;
-            this.nickLabel.Text = "sagi";
+            this.nickLabel.Text = "sagi#2230";
             this.nickLabel.ThemeAuthor = "Narwin";
             this.nickLabel.ThemeName = "MetroDark";
             // 
