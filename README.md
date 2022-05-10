@@ -3,7 +3,7 @@
 An advanced League of Legends Orbwalker with Target Selector. I finally pushed it to public to improve the code and to stop people from buying wadbot for 30$/month for such an easy piece of code.
 This script is **fully external**, so it doesn't inject into your game. It just hooks your mouse and keyboard and read necessary info from the screen.
 
-## Join spinjitzuu community discord
+## FAQ/ERRORS/TUTORIAL | Join spinjitzuu community discord
 https://discord.gg/faKAJrRm9m - On this server you will find tutorial and every error fix.
 
 ## Features
