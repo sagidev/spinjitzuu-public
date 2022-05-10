@@ -1020,12 +1020,15 @@ namespace spinjitzuu3
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.ClientSize = new System.Drawing.Size(475, 508);
+            this.ClientSize = new System.Drawing.Size(459, 489);
             this.Controls.Add(this.metroSetLabel23);
             this.Controls.Add(this.metroSetLabel1);
             this.Controls.Add(this.nickLabel);
             this.Controls.Add(this.metroSetPanel1);
             this.Controls.Add(this.statusLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximumSize = new System.Drawing.Size(475, 528);
+            this.MinimumSize = new System.Drawing.Size(475, 528);
             this.Name = "Form1";
             this.Style = MetroSet_UI.Enums.Style.Dark;
             this.Text = "Spinjitzuu - sagi\'s spacegliding service";

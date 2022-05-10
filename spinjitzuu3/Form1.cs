@@ -503,7 +503,7 @@ namespace spinjitzuu3
             {
                 Spin spin = new Spin();
 
-                ReadConfig();
+                //ReadConfig();
                 //Login();
 
                 //inicjalizacja wszystkiego
