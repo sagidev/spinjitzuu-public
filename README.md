@@ -4,7 +4,7 @@ An advanced League of Legends Orbwalker with Target Selector. I finally pushed i
 This script is **fully external**, so it doesn't inject into your game. It just hooks your mouse and keyboard and read necessary info from the screen.
 
 ## FAQ/ERRORS/TUTORIAL | Join spinjitzuu community discord
-https://discord.gg/faKAJrRm9m - On this server you will find tutorial and every error fix.
+[https://discord.gg/faKAJrRm9m](https://discord.gg/Ex99RtxBYY) - On this server you will find tutorial and every error fix.
 
 ## Features
 
