@@ -1,3 +1,8 @@
+## IMPORANT INFO
+
+OPEN SOURCE SPINJITZUU VERSION IS QUITTED. I WONT ANSWER ON ANY QUESTIONS RELATED TO THIS ONE. CURRENT ACTIVE SPINJITZUU VERSION CAN BE FOUND ON https://spinjitzuu.lol/ . 
+I don't upload any binaries. This source is just a "good" base to learn from. 
+
 # Spinjitzuu External Orbwalker
 
 An advanced League of Legends Orbwalker with Target Selector. I finally pushed it to public to improve the code and to stop people from buying wadbot for 30$/month for such an easy piece of code.
