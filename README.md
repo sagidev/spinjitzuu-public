@@ -1,6 +1,7 @@
-# Spinjitzuu External Orbwalker
+# Spinjitzuu External Orbwalker | 6.0.2
 
 http://www.spinjitzuu.lol/
+
 https://discord.gg/spinjitzuu
 
 ## Features
@@ -28,3 +29,6 @@ https://discord.gg/spinjitzuu
 - gwen w fix
 - frozenheart fix
 
+## Patch History
+
+6.0.2
