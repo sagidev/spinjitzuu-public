@@ -11,7 +11,7 @@ This script is **fully external**, so it doesn't inject into your game. It just 
 Trailer: https://www.youtube.com/watch?v=kuODmaKKkFg
 
 ## FAQ/ERRORS/TUTORIAL | Join spinjitzuu community discord
-[https://discord.gg/WJw3wwNZ2a](https://discord.gg/WJw3wwNZ2a) - On this server you will find tutorial and every error fix.
+[https://discord.gg/WJw3wwNZ2a](https://discord.gg/spinjitzuu) - On this server you will find tutorial and every error fix.
 
 ## Features
 
