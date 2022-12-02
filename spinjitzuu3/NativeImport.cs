@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace spinjitzuu3
 {
     class NativeImport
     {
+        //---------- Consts ----------
+
         public const int SW_HIDE = 0;
         public const int SW_SHOW = 5;
         public const int MY_CODE_PAGE = 437;
@@ -19,6 +18,33 @@ namespace spinjitzuu3
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HTCAPTION = 0x2;
+
+
+        //---------- DLL Imports ----------
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetDC(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        static extern Int32 ReleaseDC(IntPtr hwnd, IntPtr hdc);
+
+        [DllImport("gdi32.dll")]
+        static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
+
+        [DllImport("user32.dll")]
+        static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
+
+        [DllImport("User32.dll")]
+        static extern int SetForegroundWindow(IntPtr point);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern void keybd_event(uint bVk, uint bScan, uint dwFlags, uint dwExtraInfo);
 
         [DllImport("user32.dll")]
         internal static extern bool ReleaseCapture();
@@ -38,19 +64,6 @@ namespace spinjitzuu3
 
         [DllImport("user32.dll")]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
-        public static string GetActiveWindowTitle()
-        {
-            const int nChars = 256;
-            StringBuilder Buff = new StringBuilder(nChars);
-            IntPtr handle = GetForegroundWindow();
-
-            if (GetWindowText(handle, Buff, nChars) > 0)
-            {
-                return Buff.ToString();
-            }
-            return null;
-        }
 
         [DllImport("gdi32.dll")]
         public static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int dwRop);
@@ -118,8 +131,5 @@ namespace spinjitzuu3
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool BringWindowToTop(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }

@@ -13,6 +13,13 @@ namespace spinjitzuu3
 {
 	class PixelBot
 	{
+		//---------- Declarations ----------
+
+		Bitmap bmp = new Bitmap(1, 1);
+		private int monitor;
+
+		//---------- DLL Imports ----------
+
 		[DllImport("user32.dll")]
 		static extern IntPtr GetDC(IntPtr hwnd);
 
@@ -22,6 +29,12 @@ namespace spinjitzuu3
 		[DllImport("gdi32.dll")]
 		static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
 
+
+		//---------- Functions ----------
+
+		/// <summary>
+		/// Get pixel's color at {x,y} screen position
+		/// </summary>
 		public System.Drawing.Color GetPixelColor(int x, int y)
 		{
 			IntPtr hdc = GetDC(IntPtr.Zero);
@@ -32,7 +45,10 @@ namespace spinjitzuu3
 						 (int)(pixel & 0x00FF0000) >> 16);
 			return color;
 		}
-		Bitmap bmp = new Bitmap(1, 1);
+
+		/// <summary>
+		/// Get pixel's color at {x,y} screen position
+		/// </summary>
 		public Color GetColorAt(int x, int y)
 		{
 			Rectangle bounds = new Rectangle(x, y, 1, 1);
@@ -42,8 +58,13 @@ namespace spinjitzuu3
 		}
 
 
-
-		private int monitor;
+		/// <summary>
+		/// Less optimized function for reading pixel on screen
+		/// </summary>
+		/// <param name="rect"></param>
+		/// <param name="PixelColor"></param>
+		/// <param name="ShadeVariation"></param>
+		/// <returns></returns>
 		public unsafe Point[] PixelSearch(Rectangle rect, Color PixelColor, int ShadeVariation)
 		{
 			ArrayList arrayList = new ArrayList();
@@ -81,6 +102,14 @@ namespace spinjitzuu3
 				return (Point[])arrayList.ToArray(typeof(Point));
 			}
 		}
+
+		/// <summary>
+		/// More optimized function for reading pixel on screen
+		/// </summary>
+		/// <param name="rect"></param>
+		/// <param name="Pixel_Color"></param>
+		/// <param name="Shade_Variation"></param>
+		/// <returns></returns>
 		public Point[] Search(Rectangle rect, Color Pixel_Color, int Shade_Variation)
 		{
 			ArrayList points = new ArrayList();

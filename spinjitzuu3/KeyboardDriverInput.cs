@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace spinjitzuu3
 {
+    //Whole lib is from github somewhere
+
     class KeyboardDirectInput
     {
         private const int INPUT_KEYBOARD = 1;
@@ -48,8 +50,6 @@ namespace spinjitzuu3
 
         public static void SendKeyDown(short keyBoardScanCode)
         {
-            //Thread.Sleep(100);
-
             NativeImport.SendInput(1, CreateKeyBoardInput(0, keyBoardScanCode), Marshal.SizeOf(typeof(INPUT)));
         }
 
@@ -61,7 +61,6 @@ namespace spinjitzuu3
         public static void SendKeyUp(short keyBoardScanCode)
         {
             Thread.Sleep(100);
-
             NativeImport.SendInput(1, CreateKeyBoardInput(0, keyBoardScanCode, KEYEVENTF_KEYUP), Marshal.SizeOf(typeof(INPUT)));
         }
 

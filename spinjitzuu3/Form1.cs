@@ -18,6 +18,8 @@ namespace spinjitzuu3
 {
     public partial class Form1 : MetroSetForm
     {
+        //---------- Declarations ----------
+
         public static string[] configArray = new string[4] { "", "500", "", "" };
         public static bool isLogged = false;
         public static bool inGame = false;
@@ -43,25 +45,20 @@ namespace spinjitzuu3
             InitializeComponent();
         }
 
-        
+        /// <summary>
+        /// Read "config.txt" file to get KeyBinds
+        /// </summary>
         public void ReadConfig()
         {
             int i = 0;
             foreach (string line in System.IO.File.ReadLines(@"config.txt"))
             {
-
-                //for(int i = 0; i<3; i++)
-                //{
-                //    configArray[i] = line;
-                //}
                 configArray[i] = line;
                 i++;
             }
             if (configArray[0] == "C")
             {
                 spacegliderKey = Key.C;
-                //Console.WriteLine("Spaceglider key set to C");
-                
                 BeginInvoke(new Action(() =>
                 {
                     spacegliderkeyLabel.Text = "C";
@@ -70,14 +67,11 @@ namespace spinjitzuu3
             if (configArray[0] == "Space")
             {
                 spacegliderKey = Key.Space;
-                //Console.WriteLine("Spaceglider key set to Space");
                 BeginInvoke(new Action(() =>
                 {
                     spacegliderkeyLabel.Text = "Space";
                 }));
             }
-            //string scanconfig = configArray[2];
-            //ScanSleeper = Convert.ToInt32(configArray[1]);
             if (configArray[2] != "")
             {
                 savedLogin = configArray[2];
@@ -86,22 +80,16 @@ namespace spinjitzuu3
             {
                 savedPass = configArray[3];
             }
-            //if(configArray[0]==1)
-            //{
-            //    MessageBox.Show("spacja");
-            //}
-            //if (configArray[0] == 2)
-            //{
-            //    MessageBox.Show("C");
-            //}
         }
 
+        /// <summary>
+        /// Update scanned entities on GUI
+        /// </summary>
         public void UpdateGUI()
         {
             BeginInvoke(new Action(() =>
             {
                 enemiesLbl.Text = consts.enemyHPArrayGlobal.Length.ToString();
-                //input.SetPosition(consts.enemyHPArrayGlobal.First().X, consts.enemyHPArrayGlobal.First().Y);
                 alliesLbl.Text = consts.myHPArrayGlobal.Length.ToString();
             }));
         }
@@ -238,6 +226,10 @@ namespace spinjitzuu3
             TH.Start();
         }
 
+        /// <summary>
+        /// Checks game state
+        /// </summary>
+        /// <returns></returns>
         static bool CheckIfInGame()
         {
             try
@@ -257,9 +249,11 @@ namespace spinjitzuu3
             }
         }
 
+        /// <summary>
+        /// Constantly check the game state and handles keystates
+        /// </summary>
         public void ConstScanner()
         {
-            //cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             while (true)
             {
                 if (CheckIfInGame() == true)
@@ -273,21 +267,23 @@ namespace spinjitzuu3
 
                 if (inGame)
                 {
+                    //Handle orbwalk keystate
                     if ((Keyboard.GetKeyStates(spacegliderKey) & KeyStates.Down) > 0)
                     {
+                        //Main script
                         spin.Spinjitzu(windupPercentage, consts.enemyHPArrayGlobal, consts.buffedenemyHPArrayGlobal, consts.myHPArrayGlobal);
                         UpdateGUI();
-                        //if(consts.enemyHPArrayGlobal.Length != 0 && consts.myHPArrayGlobal.Length != 0)
-                        //    input.SetPosition(spin.ChooseEnemy().X + Spin.offsetX, spin.ChooseEnemy().Y + Spin.offsetY);
-                        //input.SetPosition(0, 0);
                         BeginInvoke(new Action(() => {
                             scriptActiveCheck.Text = "Active";
                         }));
                     }
+
+                    //Handle attackmove keystate
                     if ((Keyboard.GetKeyStates(attackMoveKey) & KeyStates.Down) > 0)
                     {
                         spin.simpleAttackMove(windupPercentage);
                     }
+
                     else
                     {
                         BeginInvoke(new Action(() => {
@@ -299,8 +295,9 @@ namespace spinjitzuu3
             }
         }
 
-
-
+        /// <summary>
+        /// Set windup according to picked champion
+        /// </summary>
         public void SetWindup()
         {
             
@@ -356,7 +353,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Twisted Fate";
                     }));
                 }
-                     //championLabel.Text = "Twisted Fate";
                 if (champname == "Varus")
                 {
                     windupPercentage = 0.1754f;
@@ -365,7 +361,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Varus";
                     }));
                 }
-                     //championLabel.Text = "Varus";
                 if (champname == "Kayle")
                 {
                     windupPercentage = 0.1936f;
@@ -374,8 +369,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Kayle";
                     }));
                 }
-
-                     //championLabel.Text = "Kayle";
                 if (champname == "Caitlyn")
                 {
                     windupPercentage = 0.1771f;
@@ -384,7 +377,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Caitlyn";
                     }));
                 }
-                     //championLabel.Text = "Caitlyn";
                 if (champname == "Lucian")
                 {
                     windupPercentage = 0.15f;
@@ -393,7 +385,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Lucian";
                     }));
                 }
-                     //championLabel.Text = "Lucian";
                 if (champname == "Miss Fortune")
                 {
                     windupPercentage = 0.148f;
@@ -402,7 +393,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Miss Fortune";
                     }));
                 }
-                     //championLabel.Text = "Miss Fortune";
                 if (champname == "Sivir")
                 {
                     windupPercentage = 0.12f;
@@ -412,7 +402,6 @@ namespace spinjitzuu3
                     }));
 
                 }
-//championLabel.Text = "Sivir";
                 if (champname == "Tristana")
                 {
                     windupPercentage = 0.148f;
@@ -421,7 +410,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Tristana";
                     }));
                 }
-                     //championLabel.Text = "Tristana";
                 if (champname == "Vayne")
                 {
                     windupPercentage = 0.1754f;
@@ -430,7 +418,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Vayne";
                     }));
                 }
-                     //championLabel.Text = "Vayne";
                 if (champname == "Xayah")
                 {
                     windupPercentage = 0.1769f;
@@ -439,7 +426,6 @@ namespace spinjitzuu3
                         championLabel.Text = "Xayah";
                     }));
                 }
-                     //championLabel.Text = "Xayah";
                 if (champname == "Kindred")
                 {
                     windupPercentage = 0.1754f;
@@ -448,10 +434,12 @@ namespace spinjitzuu3
                         championLabel.Text = "Kindred";
                     }));
                 }
-                    //windupPercentage = 0.1754f; //championLabel.Text = "Kindred";
             }
         }
 
+        /// <summary>
+        /// Multithreaded All Entities Scan
+        /// </summary>
         public void scan()
         {
             PixelBot pxbot = new PixelBot();
@@ -467,8 +455,6 @@ namespace spinjitzuu3
                     Point[] myHPArray = pxbot.Search(new Rectangle(0, 0, 1920, 1080), MYcolor, 0);
                     consts.myHPArrayGlobal = myHPArray;
                     UpdateGUI();
-                    //Thread.Sleep(ScanWait);
-                    //Thread.CurrentThread.Join(10);
                     await Task.Delay(Spin.ScanWait);
                 }
             });
@@ -492,92 +478,40 @@ namespace spinjitzuu3
             });
         }
 
+
+        /// <summary>
+        /// Main Loop
+        /// </summary>
         public void Script()
         {
-            //ReadConfig();
-            //Login();
-            //ReadConfig();
-            //PatchNotes23();
-
             while (true)
             {
                 Spin spin = new Spin();
 
-                //ReadConfig();
-                //Login();
-
-                //inicjalizacja wszystkiego
+                //Scanners initialization
                 Thread Scanner = new Thread(ConstScanner);
                 Scanner.SetApartmentState(ApartmentState.STA);
                 Scanner.Start();
-
-                //Thread ScanMyHP = new Thread(spin.ScanMyHP);
-                ////ScanMyHP.IsBackground = true;
-                //ScanMyHP.SetApartmentState(ApartmentState.STA);
-                //ScanMyHP.Start();
-
-                //Thread ScanEnemyHP = new Thread(spin.ScanEnemyHP);
-                //ScanEnemyHP.SetApartmentState(ApartmentState.STA);
-                ////ScanEnemyHP.IsBackground = true;
-                //ScanEnemyHP.Start();
-
-                //Thread ScanBuffedEnemyHP = new Thread(spin.ScanBuffedEnemyHP);
-                //ScanBuffedEnemyHP.SetApartmentState(ApartmentState.STA);
-                ////ScanBuffedEnemyHP.IsBackground = true;
-                //ScanBuffedEnemyHP.Start();
-
-
-
-                //Thread Scanner = new Thread(ConstScanner);
-                //Scanner.SetApartmentState(ApartmentState.STA);
-                //Scanner.Start();
-
-                //Thread ScanMyHP = new Thread(spin.ScanMyHP);
-                //ScanMyHP.SetApartmentState(ApartmentState.STA);
-                //ScanMyHP.Start();
-
-                //Thread ScanEnemyHP = new Thread(spin.ScanEnemyHP);
-                //ScanEnemyHP.SetApartmentState(ApartmentState.STA);
-                //ScanEnemyHP.Start();
-
-                //Thread ScanBuffedEnemyHP = new Thread(spin.ScanBuffedEnemyHP);
-                //ScanBuffedEnemyHP.SetApartmentState(ApartmentState.STA);
-                //ScanBuffedEnemyHP.Start();
-
                 scan();
 
-
-                //Task.Run(() => spin.ScanMyHPAsync());
-                //Task.Run(() => spin.ScanEnemyHPAsync());
-                //Task.Run(() => spin.ScanBuffedEnemyHPAsync());
-
-                //Thread ScanSkills = new Thread(spin.ScanSkills);
-                //ScanSkills.SetApartmentState(ApartmentState.STA);
-                //ScanSkills.Start();
-
-
-                //overlay
-                //overlay over = new overlay();
-                //over.Show();
-
-                while (true)//petla zeby sie nie zamknela apka
+                //Core loop
+                while (true)
                 {
-
-                    //Console.WriteLine("[LOG] - GAME NOT FOUND");
-
+                    //Checking game state
                     if (inGame == false)
                     {
                         while (inGame == false)
                         {
-                            //Console.WriteLine("[GAME] - Waiting for game");
+                            //Waiting for the game to start
                             BeginInvoke(new Action(() =>
                             {
                                 statusLabel.Text = "Not in Game";
                             }));
-                            //statusLabel.Text = "Not in Game";
                             Thread.Sleep(2000);
                         }
                     }
+
+                    //Game starts
                     if (inGame == true)
                     {
                         BeginInvoke(new Action(() =>
@@ -585,6 +519,7 @@ namespace spinjitzuu3
                             statusLabel.Text = "in Game";
                         }));
                         
+                        //Setting windup and needed colors
                         SetWindup();
                         string ENEMYHP = "#3A0400";
                         Color ENEMYcolor = System.Drawing.ColorTranslator.FromHtml(ENEMYHP);
@@ -593,32 +528,24 @@ namespace spinjitzuu3
                         string BUFFEDENEMYHP = "#6B3A73";
                         Color ENEMYBUFFEDcolor = System.Drawing.ColorTranslator.FromHtml(BUFFEDENEMYHP);
                         PixelBot pxbot = new PixelBot();
+
+                        //Setting the keybinds
                         if (configArray[0] == "C")
                         {
                             spacegliderKey = Key.C;
-                            //Console.WriteLine("[CONFIG] - Spaceglider key set to C");
                         }
                         if (configArray[0] == "Space")
                         {
                             spacegliderKey = Key.Space;
-                            //Console.WriteLine("[CONFIG] - Spaceglider key set to Space");
                         }
+
+                        //Continute if game is still alive
                         while (inGame == true)
                         {
-                            //Point[] myHPArray = pxbot.Search(new Rectangle(0, 0, 1920, 1080), MYcolor, 0);
-                            //consts.myHPArrayGlobal = myHPArray;
-                            //Point[] enemyArray = pxbot.Search(new Rectangle(0, 0, 1920, 1080), ENEMYcolor, 0);
-                            //consts.enemyHPArrayGlobal = enemyArray;
-                            //UpdateGUI();
-                            //Thread.Sleep(Spin.ScanWait);
-
-                            //Thread.CurrentThread.Join(10);
-                            //await Task.Delay(ScanWait);
+                            //Loops the main thread to prevent from closing the GUI
                         }
                     }
-
                 }
-
             }
         }
     }

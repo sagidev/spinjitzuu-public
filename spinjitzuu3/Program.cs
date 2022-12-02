@@ -9,7 +9,7 @@ namespace spinjitzuu3
     static class Program
     {
         /// <summary>
-        /// Główny punkt wejścia dla aplikacji.
+        /// Main entry point
         /// </summary>
         [STAThread]
         static void Main()

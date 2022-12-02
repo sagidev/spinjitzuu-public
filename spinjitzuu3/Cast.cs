@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace spinjitzuu3
 {
     class Cast
     {
+
+        //Keys Declaration
         public static short fKey = 33;
         public static short dKey = 32;
 
@@ -19,29 +16,54 @@ namespace spinjitzuu3
         public static short rKey = 19;
 
         Input input = new Input();
-        //Spin spin = new Spin();
 
+        /// <summary>
+        /// Cast Flash
+        /// </summary>
         public void Flash(short flashKey)
         {
             KeyboardDirectInput.SendKey(flashKey);
         }
+
+        /// <summary>
+        /// Cast Q Ability
+        /// </summary>
         public void Q()
         {
             KeyboardDirectInput.SendKey(qKey);
         }
+
+        /// <summary>
+        /// Cast W Ability
+        /// </summary>
         public void W()
         {
             KeyboardDirectInput.SendKey(wKey);
         }
+
+        /// <summary>
+        /// Cast E Ability
+        /// </summary>
         public void E()
         {
             KeyboardDirectInput.SendKey(eKey);
         }
+
+        /// <summary>
+        /// Cast R Ability
+        /// </summary>
         public void R()
         {
             KeyboardDirectInput.SendKey(rKey);
         }
 
+
+
+        //Champion Designed Scripts
+
+        /// <summary>
+        /// Cast Targeted W Ability
+        /// </summary>
         public void targetedW(Point enemyPos)
         {
             Point Lastmovepos;
@@ -52,6 +74,10 @@ namespace spinjitzuu3
             input.SetPosition(Lastmovepos.X, Lastmovepos.Y);
         }
 
+
+        /// <summary>
+        /// Returns if Twitch's W Ability is ready to use
+        /// </summary>
         public bool isTwitchWReady()
         {
             PixelBot pxbot = new PixelBot();
@@ -67,6 +93,9 @@ namespace spinjitzuu3
             }
         }
 
+        /// <summary>
+        /// Returns if Kindreds's E Ability is ready to use
+        /// </summary>
         public bool isKindredEReady()
         {
             PixelBot pxbot = new PixelBot();
@@ -82,6 +111,9 @@ namespace spinjitzuu3
             }
         }
 
+        /// <summary>
+        /// Returns if Kindreds's Q Ability is ready to use
+        /// </summary>
         public bool isKindredQReady()
         {
             PixelBot pxbot = new PixelBot();
@@ -97,6 +129,10 @@ namespace spinjitzuu3
             }
         }
 
+
+        /// <summary>
+        /// Returns if Kindreds's R Ability is ready to use
+        /// </summary>
         public bool isKindredRReady()
         {
             PixelBot pxbot = new PixelBot();
@@ -112,6 +148,9 @@ namespace spinjitzuu3
             }
         }
 
+        /// <summary>
+        /// Kindred's Auto-R cast script
+        /// </summary>
         public void kindredAutoR()
         {
             float currentHealth = float.Parse(API.readActiveCurrentHealth());

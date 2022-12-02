@@ -11,10 +11,13 @@ namespace spinjitzuu3
 {
     class Spin
     {
-        //lool
+        //---------- Declarations ----------
+
         private static bool canAttack = true;
         private static bool canAttackk = true;
         private static float nextAttack = 0;
+
+        Form1 gui = new Form1();
         Input input = new Input();
         Cast cast = new Cast();
         consts consts = new consts();
@@ -29,18 +32,90 @@ namespace spinjitzuu3
         public static int offsetX = 65;
         public static int offsetY = 95;
 
-        //public Point[] myHPArrayGlobal = { };
-        //public Point[] enemyHPArrayGlobal = { };
-        //public Point[] buffedenemyHPArrayGlobal = { };
 
+
+        //---------- Functions ----------
+
+
+        /// <summary>
+        /// Scan for enemies available in LocalPlayer's AttackRange and attack them as often as it's possible with Target Selector.
+        /// </summary>
+        /// <param name="windup"></param>
+        /// <param name="Earray"></param>
+        /// <param name="BEarray"></param>
+        /// <param name="myArray"></param>
+        public void Spinjitzu(float windup, Point[] Earray, Point[] BEarray, Point[] myArray)
+        {
+            //Read all calculation info
+            float timeBetweenAttacks = (1000.0f / float.Parse(API.readAttackSpeed()));
+            float gameTime = (float.Parse(API.readGameTime()) * 1000);
+            Point Lastmovepos;
+
+            //Check if LocalPlayer is able to attack
+            if (canAttackk)
+            {
+                Lastmovepos = Cursor.Position;
+                //Check if there are available enemies to attack
+                if (Earray.Length != 0 || BEarray.Length != 0)
+                {
+                    //Set cursor position right on the enemy
+                    input.SetPosition(ChooseEnemy(Earray, BEarray, myArray).X + offsetX, ChooseEnemy(Earray, BEarray, myArray).Y + offsetY);
+                    Thread.Sleep(10);
+
+                    //Cast Attack
+                    input.middleClick();
+                    Thread.Sleep(10);
+
+                    //Return cursor position from pre-attack saved position
+                    input.SetPosition(Lastmovepos.X, Lastmovepos.Y);
+
+                    //Wait for windup to not cancel and auto-attack
+                    float waitsec = GetWindupTime(windup);
+                    int wait = Convert.ToInt32(waitsec);
+
+                    //Calculate the time when next attack would be casted
+                    nextAttack = (gameTime + (timeBetweenAttacks * (glidingSpeed / 100)));
+                    Thread.Sleep(wait + additionalWindup);
+                    canAttackk = false;
+                }
+                else
+                {
+                    //Move your champion when attack is available but there are no enemies nearby
+                    input.rightClick();
+                }
+            }
+            else
+            {
+                //Move your champion when attack is not available
+                if (gameTime > nextAttack)
+                {
+                    //Attack is now available
+                    input.rightClick();
+                    canAttackk = true;
+                }
+                else
+                {
+                    input.rightClick();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cast attack as fast as its possible without cancelling any auto-attacks. It does not support Target Selector.
+        /// </summary>
         public void simpleAttackMove(float windup)
         {
+            //Read all calculation info
             float timeBetweenAttacks = (1000.0f / float.Parse(API.readAttackSpeed()));
             float gameTime = (float.Parse(API.readGameTime()) * 1000);
 
+            //Check if LocalPlayer is able to attack
             if (canAttack)
             {
+                //Cast Attack
                 input.middleClick();
+
+                //Wait for windup to not cancel and auto-attack
                 float waitsec = GetWindupTime(windup) + 0.5f;
                 int wait = Convert.ToInt32(waitsec - 10);
                 if (float.Parse(API.readAttackSpeed()) > 2.5)
@@ -58,8 +133,10 @@ namespace spinjitzuu3
             }
             else
             {
+                //Move your champion when attack is not available
                 if (gameTime > nextAttack)
                 {
+                    //Attack is now available
                     input.rightClick();
                     canAttack = true;
                 }
@@ -67,115 +144,6 @@ namespace spinjitzuu3
                 {
                     input.rightClick();
                 }
-            }
-        }
-
-        public void Spinjitzu(float windup, Point[] Earray, Point[] BEarray, Point[] myArray)
-        {
-            //Point[] myHPArrayLocal = consts.myHPArrayGlobal;
-            //Point[] enemyHPArrayLocal = consts.enemyHPArrayGlobal;
-            //Point[] buffedenemyHPArraylocal = consts.buffedenemyHPArrayGlobal;
-            float timeBetweenAttacks = (1000.0f / float.Parse(API.readAttackSpeed()));
-            //if (kindredAutoR)
-            //    cast.kindredAutoR();
-            float gameTime = (float.Parse(API.readGameTime()) * 1000);
-            Point Lastmovepos;
-            //Console.WriteLine("waiting for attack");
-            if (canAttackk)
-            {
-                Lastmovepos = Cursor.Position;
-                //Console.WriteLine("looking for enemy");
-                if (Earray.Length != 0 || BEarray.Length != 0)
-                {
-                    input.SetPosition(ChooseEnemy(Earray, BEarray, myArray).X + offsetX, ChooseEnemy(Earray, BEarray, myArray).Y + offsetY);
-                    //input.SetPosition(0, 0);
-                    //Console.WriteLine("found enemy");
-                    Thread.Sleep(10);
-                    input.middleClick();
-                    //Console.WriteLine("attacked");
-                    Thread.Sleep(10);
-
-                    input.SetPosition(Lastmovepos.X, Lastmovepos.Y);
-                    //float waitsec = GetWindupTime(windup) + 0.5f;
-                    //int wait = Convert.ToInt32(waitsec - 10);
-                    float waitsec = GetWindupTime(windup);
-                    int wait = Convert.ToInt32(waitsec);
-                    //if (float.Parse(API.readAttackSpeed()) > 2.5)
-                    //{
-                    //    nextAttack = (gameTime + (timeBetweenAttacks * 0.95f));
-                    //    Thread.Sleep(wait);
-                    //}
-                    //else
-                    //{
-                    //    nextAttack = (gameTime + (timeBetweenAttacks * 1.05f));
-                    //    Thread.Sleep(wait);
-                    //}
-                    nextAttack = (gameTime + (timeBetweenAttacks * (glidingSpeed/100)));
-
-                    //nextAttack = (gameTime + (timeBetweenAttacks*1.05f));
-                    
-                    Thread.Sleep(wait+additionalWindup);
-                    //targetedW();
-                    canAttackk = false;
-                }
-                else
-                {
-                    //input.SetPosition(consts.enemyHPArrayGlobal.First().X, consts.enemyHPArrayGlobal.First().Y);
-                    input.rightClick();
-                }
-            }
-            else
-            {
-                if (gameTime > nextAttack)
-                {
-                    Console.WriteLine("waiting for aa");
-                    input.rightClick();
-                    canAttackk = true;
-                }
-                else
-                {
-                    //if (API.readChampionName() == "Kindred" && aaResets)
-                    //{
-                    //    if (cast.isKindredQReady())
-                    //        cast.Q();
-                    //    targetedE();
-                    //}
-                    //if (API.readChampionName() == "Twitch" && aaResets)
-                    //{
-                    //    targetedW();
-                    //}
-                    Console.WriteLine("spinning");
-                    input.rightClick();
-                }
-            }
-        }
-
-
-        public void targetedW()
-        {
-            if (cast.isTwitchWReady())
-            {
-                Point Lastmovepos;
-                Lastmovepos = Cursor.Position;
-                input.SetPosition(ChooseEnemy(consts.enemyHPArrayGlobal, consts.buffedenemyHPArrayGlobal, consts.myHPArrayGlobal).X + 65, ChooseEnemy(consts.enemyHPArrayGlobal, consts.buffedenemyHPArrayGlobal, consts.myHPArrayGlobal).Y + 95);
-                Thread.Sleep(10);
-                cast.W();
-                Thread.Sleep(10);
-                input.SetPosition(Lastmovepos.X, Lastmovepos.Y);
-            }
-        }
-        public void targetedE()
-        {
-            if (cast.isKindredEReady())
-            {
-                Point Lastmovepos;
-                Lastmovepos = Cursor.Position;
-                Spin spin = new Spin();
-                input.SetPosition(ChooseEnemy(consts.enemyHPArrayGlobal,consts.buffedenemyHPArrayGlobal,consts.myHPArrayGlobal).X + 65, ChooseEnemy(consts.enemyHPArrayGlobal, consts.buffedenemyHPArrayGlobal, consts.myHPArrayGlobal).Y + 95);
-                Thread.Sleep(10);
-                cast.E();
-                Thread.Sleep(10);
-                input.SetPosition(Lastmovepos.X, Lastmovepos.Y);
             }
         }
 
@@ -216,7 +184,10 @@ namespace spinjitzuu3
                 return Cursor.Position;
             }
         }
-
+        
+        /// <summary>
+        /// Scans LocalPlayer's Healthbar
+        /// </summary>
         public void ScanMyHP()
         {
             PixelBot pxbot = new PixelBot();
@@ -235,6 +206,9 @@ namespace spinjitzuu3
             }
         }
 
+        /// <summary>
+        /// Scans Enemies' Healthbar
+        /// </summary>
         public void ScanEnemyHP()
         {
             PixelBot pxbot = new PixelBot();
@@ -253,7 +227,9 @@ namespace spinjitzuu3
             }
         }
 
-        Form1 gui = new Form1();
+        /// <summary>
+        /// Multithreaded All Entities Scan
+        /// </summary>
         public void scan()
         {
             PixelBot pxbot = new PixelBot();
@@ -294,6 +270,9 @@ namespace spinjitzuu3
             });
         }
 
+        /// <summary>
+        /// Scan all Purple Healthbars (Buffed Enemies)
+        /// </summary>
         public void ScanBuffedEnemyHP()
         {
             PixelBot pxbot = new PixelBot();
@@ -309,11 +288,20 @@ namespace spinjitzuu3
             }
         }
 
-
+        /// <summary>
+        /// Get a Windup Time needed to cast a full Auto-Attack
+        /// </summary>
+        /// <param name="windupPerc"></param>
+        /// <returns></returns>
         internal float GetWindupTime(float windupPerc)
         {
             return (1 / float.Parse(API.readAttackSpeed()) * 1000) * windupPerc;
         }
+
+        /// <summary>
+        /// Get an Attack Delay time after casting a full Auto-Attack
+        /// </summary>
+        /// <returns></returns>
         internal float GetAttackDelay()
         {
             return (int)(1000.0f / float.Parse(API.readAttackSpeed()));

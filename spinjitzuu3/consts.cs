@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace spinjitzuu3
 {
+    /// <summary>
+    /// Global arrays
+    /// </summary>
     class consts
     {
         public Point[] myHPArrayGlobal = { };
