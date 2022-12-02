@@ -11,6 +11,7 @@ namespace spinjitzuu3
 {
     class Spin
     {
+        //lool
         private static bool canAttack = true;
         private static bool canAttackk = true;
         private static float nextAttack = 0;
