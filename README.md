@@ -11,7 +11,7 @@ This script is **fully external**, so it doesn't inject into your game. It just 
 Trailer: https://www.youtube.com/watch?v=kuODmaKKkFg
 
 ## Join spinjitzuu community discord - #1 premium orbwalker on the market
-[https://discord.gg/WJw3wwNZ2a](https://discord.gg/spinjitzuu)
+[https://discord.gg/spinjitzuu](https://discord.gg/spinjitzuu)
 
 ## Features
 
