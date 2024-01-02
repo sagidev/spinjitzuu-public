@@ -1,7 +1,7 @@
 ## IMPORANT INFO
 
 OPEN SOURCE SPINJITZUU VERSION IS QUITTED. I WONT ANSWER ON ANY QUESTIONS RELATED TO THIS ONE. CURRENT ACTIVE SPINJITZUU VERSION CAN BE FOUND ON https://spinjitzuu.lol/ . 
-I don't upload any binaries. This source is just a "good" base to learn from. 
+I don't upload any binaries. This source is just a "decent" base to learn from. As i coded it at the start of my learning journey, many parts of the code can be bad and not optimized. Many things can not work anymore as well, but the whole idea of how it work will not change.
 
 # Spinjitzuu External Orbwalker
 
@@ -10,8 +10,8 @@ This script is **fully external**, so it doesn't inject into your game. It just 
 
 Trailer: https://www.youtube.com/watch?v=kuODmaKKkFg
 
-## FAQ/ERRORS/TUTORIAL | Join spinjitzuu community discord
-[https://discord.gg/WJw3wwNZ2a](https://discord.gg/spinjitzuu) - On this server you will find tutorial and every error fix.
+## Join spinjitzuu community discord - #1 premium orbwalker on the market
+[https://discord.gg/WJw3wwNZ2a](https://discord.gg/spinjitzuu)
 
 ## Features
 
