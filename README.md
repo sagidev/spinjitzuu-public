@@ -1,6 +1,6 @@
 # Spinjitzuu External Orbwalker
 
-An advanced League of Legends Helping Tool with Target Selector.
+An advanced League of Legends Helping Tool with Target Selector. Old base created for learning purpose.
 
 ## Features
 
