@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Windows.Forms;
 
 namespace spinjitzuu3
 {
@@ -21,9 +22,9 @@ namespace spinjitzuu3
                 }
                 return doc;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 return "";
             }
         }
@@ -44,9 +45,9 @@ namespace spinjitzuu3
                 }
                 return doc;
             }
-            catch
+            catch(Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 return "";
             }
         }

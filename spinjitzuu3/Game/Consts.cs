@@ -10,7 +10,7 @@ namespace spinjitzuu3
     /// <summary>
     /// Global arrays
     /// </summary>
-    class consts
+    class Consts
     {
         public Point[] myHPArrayGlobal = { };
         public Point[] enemyHPArrayGlobal = { };

@@ -38,7 +38,7 @@ namespace spinjitzuu3
         static Cast cast = new Cast();
         static Spin spin = new Spin();
         static Input input = new Input();
-        consts consts = new consts();
+        Consts consts = new Consts();
 
         public Form1()
         {
@@ -226,28 +226,7 @@ namespace spinjitzuu3
             TH.Start();
         }
 
-        /// <summary>
-        /// Checks game state
-        /// </summary>
-        /// <returns></returns>
-        static bool CheckIfInGame()
-        {
-            try
-            {
-                if (float.Parse(API.readAttackSpeed()) > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        
 
         /// <summary>
         /// Constantly check the game state and handles keystates
@@ -256,11 +235,11 @@ namespace spinjitzuu3
         {
             while (true)
             {
-                if (CheckIfInGame() == true)
+                if (GameManager.CheckIfInGame() == true)
                 {
                     inGame = true;
                 }
-                if (CheckIfInGame() == false)
+                if (GameManager.CheckIfInGame() == false)
                 {
                     inGame = false;
                 }
@@ -271,7 +250,7 @@ namespace spinjitzuu3
                     if ((Keyboard.GetKeyStates(spacegliderKey) & KeyStates.Down) > 0)
                     {
                         //Main script
-                        spin.Spinjitzu(windupPercentage, consts.enemyHPArrayGlobal, consts.buffedenemyHPArrayGlobal, consts.myHPArrayGlobal);
+                        spin.Orbwalk(windupPercentage, consts.enemyHPArrayGlobal, consts.buffedenemyHPArrayGlobal, consts.myHPArrayGlobal);
                         UpdateGUI();
                         BeginInvoke(new Action(() => {
                             scriptActiveCheck.Text = "Active";
@@ -281,7 +260,7 @@ namespace spinjitzuu3
                     //Handle attackmove keystate
                     if ((Keyboard.GetKeyStates(attackMoveKey) & KeyStates.Down) > 0)
                     {
-                        spin.simpleAttackMove(windupPercentage);
+                        spin.SimpleAttackMove(windupPercentage);
                     }
 
                     else
@@ -440,42 +419,38 @@ namespace spinjitzuu3
         /// <summary>
         /// Multithreaded All Entities Scan
         /// </summary>
-        public void scan()
+        public void Scan()
         {
             PixelBot pxbot = new PixelBot();
-            string ENEMYHP = "#3A0400";
-            Color ENEMYcolor = System.Drawing.ColorTranslator.FromHtml(ENEMYHP);
-            string MYHP = "#312C00";
-            Color MYcolor = System.Drawing.ColorTranslator.FromHtml(MYHP);
-            string BUFFEDENEMYHP = "#6B3A73";
-            Color ENEMYBUFFEDcolor = System.Drawing.ColorTranslator.FromHtml(BUFFEDENEMYHP);
-            var scanHP = Task.Run(async () => {
-                while (true)
-                {
-                    Point[] myHPArray = pxbot.Search(new Rectangle(0, 0, 1920, 1080), MYcolor, 0);
-                    consts.myHPArrayGlobal = myHPArray;
-                    UpdateGUI();
-                    await Task.Delay(Spin.ScanWait);
-                }
-            });
-            var scanE = Task.Run(async () => {
-                while (true)
-                {
-                    Point[] enemyArray = pxbot.Search(new Rectangle(0, 0, 1920, 1080), ENEMYcolor, 0);
-                    consts.enemyHPArrayGlobal = enemyArray;
-                    UpdateGUI();
-                    await Task.Delay(Spin.ScanWait);
-                }
-            });
-            var scanBE = Task.Run(async () => {
-                while (true)
-                {
-                    Point[] enemyBuffedArray = pxbot.Search(new Rectangle(0, 0, 1920, 1080), ENEMYBUFFEDcolor, 0);
-                    consts.buffedenemyHPArrayGlobal = enemyBuffedArray;
-                    UpdateGUI();
-                    await Task.Delay(Spin.ScanWait);
-                }
-            });
+            ScanColors scanColors = new ScanColors(); // Encapsulate color definitions
+
+            var scanTasks = new[]
+            {
+                CreateScanTask(pxbot, scanColors.MyHpColor, (points) => consts.myHPArrayGlobal = points),
+                CreateScanTask(pxbot, scanColors.EnemyHpColor, (points) => consts.enemyHPArrayGlobal = points),
+                CreateScanTask(pxbot, scanColors.BuffedEnemyHpColor, (points) => consts.buffedenemyHPArrayGlobal = points)
+            };
+
+            Task.WhenAll(scanTasks);
+        }
+
+        private async Task CreateScanTask(PixelBot pxbot, Color color, Action<Point[]> updateAction)
+        {
+            while (true)
+            {
+                Point[] points = pxbot.Search(new Rectangle(0, 0, 1920, 1080), color, 0);
+                updateAction(points);
+                UpdateGUI(); // Assuming UpdateGUI is thread-safe
+                await Task.Delay(Spin.ScanWait);
+            }
+        }
+
+        // Encapsulate color definitions for better organization and maintainability
+        public class ScanColors
+        {
+            public Color MyHpColor { get; } = ColorTranslator.FromHtml("#312C00");
+            public Color EnemyHpColor { get; } = ColorTranslator.FromHtml("#3A0400");
+            public Color BuffedEnemyHpColor { get; } = ColorTranslator.FromHtml("#6B3A73");
         }
 
 
@@ -486,66 +461,85 @@ namespace spinjitzuu3
         {
             while (true)
             {
-                Spin spin = new Spin();
+                InitializeAndRun();
+            }
+        }
 
-                //Scanners initialization
-                Thread Scanner = new Thread(ConstScanner);
-                Scanner.SetApartmentState(ApartmentState.STA);
-                Scanner.Start();
-                scan();
+        private void InitializeAndRun()
+        {
+            Spin spin = new Spin();
 
-                //Core loop
-                while (true)
+            // Start scanners
+            Task.Run(() => ConstScanner());
+            Scan();
+
+            // Core loop
+            RunGameLoop();
+        }
+
+        private void RunGameLoop()
+        {
+            while (true)
+            {
+                if (!inGame)
                 {
-                    //Checking game state
-                    if (inGame == false)
-                    {
-                        while (inGame == false)
-                        {
-                            //Waiting for the game to start
-                            BeginInvoke(new Action(() =>
-                            {
-                                statusLabel.Text = "Not in Game";
-                            }));
-                            Thread.Sleep(2000);
-                        }
-                    }
-
-                    //Game starts
-                    if (inGame == true)
-                    {
-                        BeginInvoke(new Action(() =>
-                        {
-                            statusLabel.Text = "in Game";
-                        }));
-                        
-                        //Setting windup and needed colors
-                        SetWindup();
-                        string ENEMYHP = "#3A0400";
-                        Color ENEMYcolor = System.Drawing.ColorTranslator.FromHtml(ENEMYHP);
-                        string MYHP = "#312C00";
-                        Color MYcolor = System.Drawing.ColorTranslator.FromHtml(MYHP);
-                        string BUFFEDENEMYHP = "#6B3A73";
-                        Color ENEMYBUFFEDcolor = System.Drawing.ColorTranslator.FromHtml(BUFFEDENEMYHP);
-                        PixelBot pxbot = new PixelBot();
-
-                        //Setting the keybinds
-                        if (configArray[0] == "C")
-                        {
-                            spacegliderKey = Key.C;
-                        }
-                        if (configArray[0] == "Space")
-                        {
-                            spacegliderKey = Key.Space;
-                        }
-
-                        //Continute if game is still alive
-                        while (inGame == true)
-                        {
-                            //Loops the main thread to prevent from closing the GUI
-                        }
-                    }
+                    WaitForGameStart();
                 }
+                else
+                {
+                    RunInGameLogic();
+                }
+            }
+        }
+
+        private void WaitForGameStart()
+        {
+            while (!inGame)
+            {
+                UpdateStatusLabel("Not in Game");
+                Thread.Sleep(2000);
+            }
+        }
+
+        private void RunInGameLogic()
+        {
+            UpdateStatusLabel("in Game");
+            SetGameVariables();
+
+            while (inGame)
+            {
+                // Main game logic loop.
+                // This loop currently does nothing except keep the game loop alive.
+                // Add your game logic here.
+            }
+        }
+
+        private void SetGameVariables()
+        {
+            SetWindup();
+            ScanColors scanColors = new ScanColors(); // Encapsulate colors.
+            PixelBot pxbot = new PixelBot();
+
+            // Setting the keybinds
+            if (configArray[0] == "C")
+            {
+                spacegliderKey = Key.C;
+            }
+            else if (configArray[0] == "Space")
+            {
+                spacegliderKey = Key.Space;
+            }
+        }
+
+        private void UpdateStatusLabel(string status)
+        {
+            if (statusLabel != null && statusLabel.InvokeRequired) // Check if invoke is needed
+            {
+                statusLabel.BeginInvoke(new Action(() => statusLabel.Text = status));
+            }
+            else if (statusLabel != null)
+            {
+                statusLabel.Text = status;
             }
         }
     }
