@@ -8,3 +8,6 @@ An advanced League of Legends Helping Tool with Target Selector. Old base create
 - Advanced distance-based Target Selector
 - External Multithreaded Screen Scanning method
 - Configurable keybinds
+- Modern UI
+- Precise in-game calculations based on DataDragon
+- Low level input methods
